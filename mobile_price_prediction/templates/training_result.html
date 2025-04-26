@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}Training Results - Mobile Price Range Prediction{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h1 class="text-center">Model Training Results</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Model Performance Comparison</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <strong>Best Performing Model:</strong> {{ best_model }} 
+                    <p>This model will be used as the recommended model for predictions.</p>
+                </div>
+                
+                <h4 class="mt-4">Performance Metrics</h4>
+                {{ comparison_table|safe }}
+                
+                <p class="mt-3"><strong>Note:</strong> 
+                    <ul>
+                        <li>Accuracy: Percentage of correct predictions</li>
+                        <li>Precision: When a model predicts a price range, how often is it correct</li>
+                        <li>Recall: Of all the actual phones in a price range, what percentage was identified correctly</li>
+                        <li>F1 Score: Harmonic mean of precision and recall (balance between the two)</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Visualizations</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Model Comparison Chart - Directly referencing image path -->
+                    <div class="col-md-12 mb-5">
+                        <h4>Model Performance Comparison</h4>
+                        <img src="/static/images/model_comparison.png" alt="Model Comparison" class="img-fluid" style="max-width: 100%; border: 1px solid #ddd;">
+                        <p class="text-muted small">If this image appears empty, please try retraining the models or refreshing the page.</p>
+                    </div>
+                    
+                    <!-- Other visualizations -->
+                    <div class="col-md-12 mb-5">
+                        <h4>PCA and t-SNE Visualizations</h4>
+                        <img src="/static/images/dimension_reduction.png" alt="Dimension Reduction" class="img-fluid" style="max-width: 100%; border: 1px solid #ddd;">
+                        <p class="mt-2">
+                            <strong>Interpretation:</strong> This visualization shows how the mobile phones are distributed 
+                            in a 2D space using PCA and t-SNE dimensionality reduction. Points with the same color belong 
+                            to the same price range. Clusters indicate groups of phones with similar features.
+                        </p>
+                    </div>
+                    
+                    <div class="col-md-12 mb-5">
+                        <h4>Top Features by PCA</h4>
+                        <img src="/static/images/feature_importance.png" alt="Feature Importance" class="img-fluid" style="max-width: 100%; border: 1px solid #ddd;">
+                        <p class="mt-2">
+                            <strong>Interpretation:</strong> This chart shows the most important features based on PCA analysis.
+                            Features with higher absolute loadings have greater influence on the price range prediction.
+                        </p>
+                    </div>
+                    
+                    <div class="col-md-12 mb-5">
+                        <h4>Decision Tree Feature Importance</h4>
+                        <img src="/static/images/dt_feature_importance.png" alt="Decision Tree Feature Importance" class="img-fluid" style="max-width: 100%; border: 1px solid #ddd;">
+                        <p class="mt-2">
+                            <strong>Interpretation:</strong> This chart shows the importance of each feature as determined by 
+                            the Decision Tree model. Higher values indicate features that have a greater impact on determining
+                            the price range of mobile phones.
+                        </p>
+                    </div>
+                    
+                    <div class="col-md-12 mb-5">
+                        <h4>PCA Explained Variance</h4>
+                        <img src="/static/images/pca_variance.png" alt="PCA Variance" class="img-fluid" style="max-width: 100%; border: 1px solid #ddd;">
+                        <p class="mt-2">
+                            <strong>Interpretation:</strong> This chart shows how much of the total variance in the data
+                            is explained as we add more principal components. It helps determine the optimal number of
+                            components to retain in dimensionality reduction.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>Next Steps</h3>
+            </div>
+            <div class="card-body">
+                <p>Now that your models have been trained, you can:</p>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">Make a Single Prediction</h4>
+                                <p class="card-text">Enter mobile specifications to predict its price range.</p>
+                                <a href="{{ url_for('model_bp.predict') }}" class="btn btn-primary">Make Prediction</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">Make Batch Predictions</h4>
+                                <p class="card-text">Upload a CSV file with multiple mobile specifications.</p>
+                                <a href="{{ url_for('model_bp.upload_file') }}" class="btn btn-primary">Batch Prediction</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-3">
+                    <strong>Note:</strong> The models have been saved and will be available for future predictions.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

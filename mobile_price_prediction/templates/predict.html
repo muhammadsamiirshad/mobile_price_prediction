@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block title %}Make Prediction - Mobile Price Range Prediction{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h1 class="text-center">Mobile Phone Price Prediction</h1>
+        <p class="lead text-center">Enter mobile phone specifications to predict its price range</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="card">
+            <div class="card-header">
+                <h3>Enter Specifications</h3>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('model_bp.predict') }}" method="post">
+                    <div class="row">
+                        <!-- Battery Power -->
+                        <div class="col-md-6 mb-3">
+                            <label for="battery_power" class="form-label">Battery Power (mAh)</label>
+                            <input type="number" class="form-control" id="battery_power" name="battery_power" value="1500" required>
+                            <div class="form-text">Total energy a battery can store (in mAh)</div>
+                        </div>
+                        
+                        <!-- Blue -->
+                        <div class="col-md-6 mb-3">
+                            <label for="blue" class="form-label">Bluetooth</label>
+                            <select class="form-select" id="blue" name="blue" required>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                            <div class="form-text">Has Bluetooth or not (1=Yes, 0=No)</div>
+                        </div>
+                        
+                        <!-- Clock Speed -->
+                        <div class="col-md-6 mb-3">
+                            <label for="clock_speed" class="form-label">Clock Speed (GHz)</label>
+                            <input type="number" class="form-control" id="clock_speed" name="clock_speed" value="2.0" required>
+                            <div class="form-text">Microprocessor clock speed in GHz</div>
+                        </div>
+                        
+                        <!-- Dual SIM -->
+                        <div class="col-md-6 mb-3">
+                            <label for="dual_sim" class="form-label">Dual SIM</label>
+                            <select class="form-select" id="dual_sim" name="dual_sim" required>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                            <div class="form-text">Has dual SIM support (1=Yes, 0=No)</div>
+                        </div>
+                        
+                        <!-- FC (Front Camera) -->
+                        <div class="col-md-6 mb-3">
+                            <label for="fc" class="form-label">Front Camera (MP)</label>
+                            <input type="number" class="form-control" id="fc" name="fc" value="8" required>
+                            <div class="form-text">Front Camera megapixels</div>
+                        </div>
+                        
+                        <!-- Four G -->
+                        <div class="col-md-6 mb-3">
+                            <label for="four_g" class="form-label">4G</label>
+                            <select class="form-select" id="four_g" name="four_g" required>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                            <div class="form-text">Has 4G or not (1=Yes, 0=No)</div>
+                        </div>
+                        
+                        <!-- Internal Memory -->
+                        <div class="col-md-6 mb-3">
+                            <label for="int_memory" class="form-label">Internal Memory (GB)</label>
+                            <input type="number" class="form-control" id="int_memory" name="int_memory" value="32" required>
+                            <div class="form-text">Internal Memory in gigabytes</div>
+                        </div>
+                        
+                        <!-- M_dep (Mobile Depth) -->
+                        <div class="col-md-6 mb-3">
+                            <label for="m_dep" class="form-label">Mobile Depth (cm)</label>
+                            <input type="number" class="form-control" id="m_dep" name="m_dep" value="0.7" required>
+                            <div class="form-text">Mobile Depth in cm</div>
+                        </div>
+                        
+                        <!-- Mobile Weight -->
+                        <div class="col-md-6 mb-3">
+                            <label for="mobile_wt" class="form-label">Mobile Weight (g)</label>
+                            <input type="number" class="form-control" id="mobile_wt" name="mobile_wt" value="150" required>
+                            <div class="form-text">Weight of mobile phone in grams</div>
+                        </div>
+                        
+                        <!-- N_cores (Number of Processor Cores) -->
+                        <div class="col-md-6 mb-3">
+                            <label for="n_cores" class="form-label">Processor Cores</label>
+                            <input type="number" class="form-control" id="n_cores" name="n_cores" value="4" required>
+                            <div class="form-text">Number of processor cores</div>
+                        </div>
+                        
+                        <!-- PC (Primary Camera) -->
+                        <div class="col-md-6 mb-3">
+                            <label for="pc" class="form-label">Primary Camera (MP)</label>
+                            <input type="number" class="form-control" id="pc" name="pc" value="12" required>
+                            <div class="form-text">Primary Camera megapixels</div>
+                        </div>
+                        
+                        <!-- Pixel Height -->
+                        <div class="col-md-6 mb-3">
+                            <label for="px_height" class="form-label">Pixel Height</label>
+                            <input type="number" class="form-control" id="px_height" name="px_height" value="1200" required>
+                            <div class="form-text">Pixel Resolution Height</div>
+                        </div>
+                        
+                        <!-- Pixel Width -->
+                        <div class="col-md-6 mb-3">
+                            <label for="px_width" class="form-label">Pixel Width</label>
+                            <input type="number" class="form-control" id="px_width" name="px_width" value="1800" required>
+                            <div class="form-text">Pixel Resolution Width</div>
+                        </div>
+                        
+                        <!-- RAM -->
+                        <div class="col-md-6 mb-3">
+                            <label for="ram" class="form-label">RAM (MB)</label>
+                            <input type="number" class="form-control" id="ram" name="ram" value="2048" required>
+                            <div class="form-text">Random Access Memory in Megabytes</div>
+                        </div>
+                        
+                        <!-- SC_H (Screen Height) -->
+                        <div class="col-md-6 mb-3">
+                            <label for="sc_h" class="form-label">Screen Height (cm)</label>
+                            <input type="number" class="form-control" id="sc_h" name="sc_h" value="12" required>
+                            <div class="form-text">Screen Height of mobile in cm</div>
+                        </div>
+                        
+                        <!-- SC_W (Screen Width) -->
+                        <div class="col-md-6 mb-3">
+                            <label for="sc_w" class="form-label">Screen Width (cm)</label>
+                            <input type="number" class="form-control" id="sc_w" name="sc_w" value="7" required>
+                            <div class="form-text">Screen Width of mobile in cm</div>
+                        </div>
+                        
+                        <!-- Talk Time -->
+                        <div class="col-md-6 mb-3">
+                            <label for="talk_time" class="form-label">Talk Time (hours)</label>
+                            <input type="number" class="form-control" id="talk_time" name="talk_time" value="10" required>
+                            <div class="form-text">Longest time a single battery charge will last (in hours)</div>
+                        </div>
+                        
+                        <!-- Three G -->
+                        <div class="col-md-6 mb-3">
+                            <label for="three_g" class="form-label">3G</label>
+                            <select class="form-select" id="three_g" name="three_g" required>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                            <div class="form-text">Has 3G or not (1=Yes, 0=No)</div>
+                        </div>
+                        
+                        <!-- Touch Screen -->
+                        <div class="col-md-6 mb-3">
+                            <label for="touch_screen" class="form-label">Touch Screen</label>
+                            <select class="form-select" id="touch_screen" name="touch_screen" required>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                            <div class="form-text">Has touch screen or not (1=Yes, 0=No)</div>
+                        </div>
+                        
+                        <!-- Wifi -->
+                        <div class="col-md-6 mb-3">
+                            <label for="wifi" class="form-label">Wifi</label>
+                            <select class="form-select" id="wifi" name="wifi" required>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                            <div class="form-text">Has wifi or not (1=Yes, 0=No)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">Predict Price Range</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

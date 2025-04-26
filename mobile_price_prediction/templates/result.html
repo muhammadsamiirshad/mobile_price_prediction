@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block title %}Prediction Results - Mobile Price Range Prediction{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h1 class="text-center">Mobile Price Range Prediction Results</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Prediction Results</h3>
+            </div>
+            <div class="card-body">
+                {% if predictions.warnings %}
+                <div class="alert alert-warning">
+                    <strong>Warning:</strong> Some input values are significantly outside the range of the training data, which may affect prediction accuracy:
+                    <ul>
+                        {% for feature, info in predictions.warnings.items() %}
+                        <li>
+                            <strong>{{ feature|replace('_', ' ')|title }}:</strong> Your value {{ info.value }} is outside the training data range ({{ info.train_min }} to {{ info.train_max }})
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <p>The model will still make a prediction, but it may be less reliable with these extreme values.</p>
+                </div>
+                {% endif %}
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="mb-3">Predicted Price Range</h4>
+                        
+                        <div class="alert alert-success">
+                            <strong>Recommended prediction (Best Model):</strong> 
+                            {{ predictions.recommended[0] if predictions.recommended else "N/A" }}
+                            
+                            {% if predictions.price_estimate %}
+                            <div class="mt-2">
+                                <strong>Estimated Price:</strong> 
+                                PKR {{ "{:,}".format(predictions.price_estimate.exact_price) }}
+                                <br>
+                                <span class="text-muted">(Range: PKR {{ "{:,}".format(predictions.price_estimate.min_price) }} - PKR {{ "{:,}".format(predictions.price_estimate.max_price) }})</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Predicted Price Range</th>
+                                    <th>Estimated Price (PKR)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for model_name, preds in predictions.items() %}
+                                    {% if model_name != 'recommended' and model_name != 'warnings' and model_name != 'price_estimate' and model_name != 'price_estimates_by_model' %}
+                                    <tr>
+                                        <td>{{ model_name }}</td>
+                                        <td>{{ preds[0] }}</td>
+                                        <td>
+                                            {% if predictions.price_estimates_by_model and model_name in predictions.price_estimates_by_model %}
+                                                {{ "{:,}".format(predictions.price_estimates_by_model[model_name].exact_price) }}
+                                                <br>
+                                                <small class="text-muted">
+                                                    (Range: {{ "{:,}".format(predictions.price_estimates_by_model[model_name].min_price) }} - 
+                                                    {{ "{:,}".format(predictions.price_estimates_by_model[model_name].max_price) }})
+                                                </small>
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        
+                        <h5 class="mt-4">How Prices Are Calculated:</h5>
+                        <p>The price estimation is based on your specific device specifications. Key factors affecting the price:</p>
+                        <ul>
+                            <li><strong>RAM (25% impact):</strong> Higher RAM significantly increases price</li>
+                            <li><strong>Internal Memory (15% impact):</strong> More storage means higher price</li>
+                            <li><strong>Battery Power (15% impact):</strong> Higher capacity batteries increase cost</li>
+                            <li><strong>Camera Quality (25% impact total):</strong> Primary (15%) and front (10%) cameras</li>
+                            <li><strong>Other factors (20% impact):</strong> Including processor cores, screen resolution, and weight</li>
+                        </ul>
+                        <p class="text-muted small">Note: Price estimates are calculated dynamically based on your specific input values and will vary as you change specifications.</p>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h4>Input Features</h4>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for feature, value in features.items() %}
+                                <tr {% if predictions.warnings and feature in predictions.warnings %} class="table-warning" {% endif %}>
+                                    <td>{{ feature|replace('_', ' ')|title }}</td>
+                                    <td>{{ value }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('model_bp.predict') }}" class="btn btn-primary">Make New Prediction</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if visualizations %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Model Visualizations</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% if visualizations.model_comparison %}
+                    <div class="col-md-12 mb-4">
+                        <h4>Model Performance Comparison</h4>
+                        <img src="{{ visualizations.model_comparison }}" alt="Model Comparison" class="img-fluid">
+                    </div>
+                    {% endif %}
+                    
+                    {% if visualizations.dimension_reduction %}
+                    <div class="col-md-12 mb-4">
+                        <h4>PCA and t-SNE Visualizations</h4>
+                        <img src="{{ visualizations.dimension_reduction }}" alt="Dimension Reduction" class="img-fluid">
+                    </div>
+                    {% endif %}
+                    
+                    {% if visualizations.feature_importance %}
+                    <div class="col-md-12 mb-4">
+                        <h4>Feature Importance</h4>
+                        <img src="{{ visualizations.feature_importance }}" alt="Feature Importance" class="img-fluid">
+                    </div>
+                    {% endif %}
+                    
+                    {% if visualizations.dt_feature_importance %}
+                    <div class="col-md-12 mb-4">
+                        <h4>Decision Tree Feature Importance</h4>
+                        <img src="{{ visualizations.dt_feature_importance }}" alt="Decision Tree Feature Importance" class="img-fluid">
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

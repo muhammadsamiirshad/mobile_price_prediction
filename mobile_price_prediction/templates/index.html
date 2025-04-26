@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+
+{% block title %}Mobile Price Range Prediction{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="row">
+    <div class="col-md-12 text-center mb-5" data-aos="fade-up">
+        <h1 class="display-4 fw-bold mb-3">Mobile Price <span class="gradient-text">Predictor</span></h1>
+        <p class="lead fs-4 mb-5">Predict mobile phone price ranges with machine learning</p>
+        
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{{ url_for('model_bp.predict') }}" class="btn btn-primary btn-lg px-4 py-3">
+                <i class="fas fa-calculator me-2"></i> Make Prediction
+            </a>
+            <a href="{{ url_for('model_bp.train_models') }}" class="btn btn-outline-secondary btn-lg px-4 py-3">
+                <i class="fas fa-cogs me-2"></i> Train Models
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="row mb-5">
+    <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h3 class="stat-value">4</h3>
+            <p class="stat-label">ML Algorithms</p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-database"></i>
+            </div>
+            <h3 class="stat-value">20+</h3>
+            <p class="stat-label">Features Analyzed</p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="stat-value">85%+</h3>
+            <p class="stat-label">Model Accuracy</p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3 class="stat-value">4</h3>
+            <p class="stat-label">Price Categories</p>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+<div class="row mb-5">
+    <div class="col-md-12" data-aos="fade-up">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-info-circle me-2"></i> About this Project</h2>
+            </div>
+            <div class="card-body">
+                <p class="lead">This application uses machine learning algorithms to predict mobile phone price ranges based on their specifications. It implements multiple algorithms and compares their performance to give you the most accurate prediction.</p>
+                
+                <div class="row mt-5">
+                    <div class="col-md-6" data-aos="fade-right">
+                        <h3 class="mb-4"><i class="fas fa-star me-2"></i>Key Features</h3>
+                        <ul class="list-group">
+                            <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Smart data preprocessing to handle missing values</li>
+                            <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Implementation of 4 powerful ML algorithms</li>
+                            <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Comprehensive model evaluation metrics</li>
+                            <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Interactive visualizations of results</li>
+                            <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Automatic model comparison and recommendation</li>
+                            <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Single and batch prediction capabilities</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6" data-aos="fade-left">
+                        <h3 class="mb-4"><i class="fas fa-chart-pie me-2"></i>ML Models Used</h3>
+                        <div class="progress mb-4" style="height: 25px">
+                            <div class="progress-bar" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100">
+                                K-Nearest Neighbors (92%)
+                            </div>
+                        </div>
+                        <div class="progress mb-4" style="height: 25px">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
+                                Decision Tree (85%)
+                            </div>
+                        </div>
+                        <div class="progress mb-4" style="height: 25px">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 79%;" aria-valuenow="79" aria-valuemin="0" aria-valuemax="100">
+                                Naive Bayes (79%)
+                            </div>
+                        </div>
+                        <div class="progress mb-4" style="height: 25px">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 72%;" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
+                                K-Means Clustering (72%)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Action Cards -->
+<div class="row mb-5">
+    <div class="col-md-12 text-center mb-4" data-aos="fade-up">
+        <h2 class="mb-3">How Would You Like to Proceed?</h2>
+        <p class="lead">Choose an option below to get started with mobile price prediction</p>
+    </div>
+    
+    <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100 border-0">
+            <div class="card-body text-center p-5">
+                <div class="mb-4">
+                    <i class="fas fa-cogs fa-4x text-primary"></i>
+                </div>
+                <h3 class="card-title mb-3">Train Models</h3>
+                <p class="card-text mb-4">Upload your dataset to train and evaluate multiple machine learning models. Compare their performance and select the best one.</p>
+                <a href="{{ url_for('model_bp.train_models') }}" class="btn btn-primary">
+                    <i class="fas fa-cogs me-2"></i> Train Models
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card h-100 border-0">
+            <div class="card-body text-center p-5">
+                <div class="mb-4">
+                    <i class="fas fa-calculator fa-4x text-success"></i>
+                </div>
+                <h3 class="card-title mb-3">Single Prediction</h3>
+                <p class="card-text mb-4">Enter specifications for a mobile phone and get instant price range predictions from all trained models.</p>
+                <a href="{{ url_for('model_bp.predict') }}" class="btn btn-success">
+                    <i class="fas fa-calculator me-2"></i> Make Prediction
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="card h-100 border-0">
+            <div class="card-body text-center p-5">
+                <div class="mb-4">
+                    <i class="fas fa-file-upload fa-4x text-info"></i>
+                </div>
+                <h3 class="card-title mb-3">Batch Prediction</h3>
+                <p class="card-text mb-4">Upload a CSV file with multiple mobile specifications to get price range predictions in bulk.</p>
+                <a href="{{ url_for('model_bp.upload_file') }}" class="btn btn-info text-white">
+                    <i class="fas fa-file-upload me-2"></i> Batch Predict
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dataset Section -->
+<div class="row mt-5" data-aos="fade-up">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-database me-2"></i> Dataset Information</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <p>This project uses the <a href="https://www.kaggle.com/datasets/iabhishekofficial/mobile-price-classification" target="_blank" class="fw-bold text-decoration-none">Mobile Price Classification dataset</a> from Kaggle containing mobile phone features and their associated price ranges.</p>
+                        
+                        <div class="accordion mt-4" id="datasetAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFeatures">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFeatures" aria-expanded="true" aria-controls="collapseFeatures">
+                                        <i class="fas fa-list-ul me-2"></i> Features in the dataset
+                                    </button>
+                                </h2>
+                                <div id="collapseFeatures" class="accordion-collapse collapse show" aria-labelledby="headingFeatures" data-bs-parent="#datasetAccordion">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fas fa-battery-full text-primary me-2"></i> <strong>battery_power</strong>: Total energy a battery can store (mAh)</li>
+                                                    <li><i class="fab fa-bluetooth text-primary me-2"></i> <strong>blue</strong>: Has Bluetooth or not (0/1)</li>
+                                                    <li><i class="fas fa-microchip text-primary me-2"></i> <strong>clock_speed</strong>: Speed of processor</li>
+                                                    <li><i class="fas fa-sim-card text-primary me-2"></i> <strong>dual_sim</strong>: Has dual SIM support (0/1)</li>
+                                                    <li><i class="fas fa-camera text-primary me-2"></i> <strong>fc</strong>: Front Camera megapixels</li>
+                                                    <li><i class="fas fa-wifi text-primary me-2"></i> <strong>four_g</strong>: Has 4G (0/1)</li>
+                                                    <li><i class="fas fa-hdd text-primary me-2"></i> <strong>int_memory</strong>: Internal memory in GB</li>
+                                                    <li><i class="fas fa-ruler-vertical text-primary me-2"></i> <strong>m_dep</strong>: Mobile depth in cm</li>
+                                                    <li><i class="fas fa-weight text-primary me-2"></i> <strong>mobile_wt</strong>: Weight of mobile phone</li>
+                                                    <li><i class="fas fa-microchip text-primary me-2"></i> <strong>n_cores</strong>: Number of processor cores</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fas fa-camera-retro text-primary me-2"></i> <strong>pc</strong>: Primary Camera megapixels</li>
+                                                    <li><i class="fas fa-ruler-combined text-primary me-2"></i> <strong>px_height</strong>: Pixel resolution height</li>
+                                                    <li><i class="fas fa-ruler-combined text-primary me-2"></i> <strong>px_width</strong>: Pixel resolution width</li>
+                                                    <li><i class="fas fa-memory text-primary me-2"></i> <strong>ram</strong>: Random Access Memory in MB</li>
+                                                    <li><i class="fas fa-mobile-alt text-primary me-2"></i> <strong>sc_h</strong>: Screen height in cm</li>
+                                                    <li><i class="fas fa-mobile-alt text-primary me-2"></i> <strong>sc_w</strong>: Screen width in cm</li>
+                                                    <li><i class="fas fa-clock text-primary me-2"></i> <strong>talk_time</strong>: Battery life in hours</li>
+                                                    <li><i class="fas fa-wifi text-primary me-2"></i> <strong>three_g</strong>: Has 3G (0/1)</li>
+                                                    <li><i class="fas fa-hand-pointer text-primary me-2"></i> <strong>touch_screen</strong>: Has touch screen (0/1)</li>
+                                                    <li><i class="fas fa-wifi text-primary me-2"></i> <strong>wifi</strong>: Has wifi (0/1)</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTarget">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTarget" aria-expanded="false" aria-controls="collapseTarget">
+                                        <i class="fas fa-bullseye me-2"></i> Target Variable
+                                    </button>
+                                </h2>
+                                <div id="collapseTarget" class="accordion-collapse collapse" aria-labelledby="headingTarget" data-bs-parent="#datasetAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>price_range</strong>: Price category of mobile phone on a scale of 0 to 3</p>
+                                        <div class="row mt-3">
+                                            <div class="col-md-6 col-lg-3 mb-3">
+                                                <div class="card bg-light">
+                                                    <div class="card-body text-center">
+                                                        <h5 class="card-title">Low Cost (0)</h5>
+                                                        <p class="card-text">PKR 10,000 - 25,000</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-3 mb-3">
+                                                <div class="card bg-light">
+                                                    <div class="card-body text-center">
+                                                        <h5 class="card-title">Medium Cost (1)</h5>
+                                                        <p class="card-text">PKR 25,000 - 45,000</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-3 mb-3">
+                                                <div class="card bg-light">
+                                                    <div class="card-body text-center">
+                                                        <h5 class="card-title">High Cost (2)</h5>
+                                                        <p class="card-text">PKR 45,000 - 80,000</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-3 mb-3">
+                                                <div class="card bg-light">
+                                                    <div class="card-body text-center">
+                                                        <h5 class="card-title">Very High Cost (3)</h5>
+                                                        <p class="card-text">PKR 80,000 - 200,000+</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 d-none d-lg-block" data-aos="fade-left">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="position-relative">
+                                <div class="position-absolute" style="top: -30px; right: -20px; transform: rotate(15deg);">
+                                    <i class="fas fa-mobile-alt fa-7x text-primary opacity-25"></i>
+                                </div>
+                                <div class="position-absolute" style="bottom: 40px; right: 80px; transform: rotate(-10deg);">
+                                    <i class="fas fa-tablet-alt fa-8x text-info opacity-25"></i>
+                                </div>
+                                <div style="position: relative; z-index: 2;">
+                                    <div class="card p-4">
+                                        <div class="card-body text-center">
+                                            <h4 class="mb-3">Start Predicting Now</h4>
+                                            <p>Try our prediction tool with your mobile specifications</p>
+                                            <a href="{{ url_for('model_bp.predict') }}" class="btn btn-primary">
+                                                <i class="fas fa-calculator me-2"></i> Predict Now
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

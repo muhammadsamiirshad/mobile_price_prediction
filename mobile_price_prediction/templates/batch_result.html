@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Batch Prediction Results - Mobile Price Range Prediction{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h1 class="text-center">Batch Prediction Results</h1>
+        <p class="lead text-center">Results for file: {{ file_name }}</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Summary of Predictions</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for model_name, counts in summary.items() %}
+                        <div class="col-md-6 mb-4">
+                            <h4>{{ model_name }}</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Price Range</th>
+                                        <th>Count</th>
+                                        <th>Percentage</th>
+                                        <th>Estimated Price in PKR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set total = namespace(value=0) %}
+                                    {% for _, count in counts.items() %}
+                                        {% set total.value = total.value + count %}
+                                    {% endfor %}
+                                    
+                                    {% for price_range, count in counts.items() %}
+                                    <tr>
+                                        <td>
+                                            {% if price_range == 0 %}
+                                                Low Cost (0)
+                                            {% elif price_range == 1 %}
+                                                Medium Cost (1)
+                                            {% elif price_range == 2 %}
+                                                High Cost (2)
+                                            {% elif price_range == 3 %}
+                                                Very High Cost (3)
+                                            {% else %}
+                                                Unknown ({{ price_range }})
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ count }}</td>
+                                        <td>{{ (count / total.value * 100)|round(2) }}%</td>
+                                        <td>
+                                            {% if price_range == 0 %}
+                                                PKR 10,000 - PKR 25,000
+                                            {% elif price_range == 1 %}
+                                                PKR 25,000 - PKR 45,000
+                                            {% elif price_range == 2 %}
+                                                PKR 45,000 - PKR 80,000
+                                            {% elif price_range == 3 %}
+                                                PKR 80,000 - PKR 200,000+
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('static', filename=result_file) }}" class="btn btn-success" download>Download Results CSV</a>
+                    <a href="{{ url_for('model_bp.upload_file') }}" class="btn btn-primary ml-2">Upload Another File</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if visualizations %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Model Visualizations</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% if visualizations.model_comparison %}
+                    <div class="col-md-12 mb-4">
+                        <h4>Model Performance Comparison</h4>
+                        <img src="{{ visualizations.model_comparison }}" alt="Model Comparison" class="img-fluid">
+                    </div>
+                    {% endif %}
+                    
+                    {% if visualizations.dimension_reduction %}
+                    <div class="col-md-12 mb-4">
+                        <h4>PCA and t-SNE Visualizations</h4>
+                        <img src="{{ visualizations.dimension_reduction }}" alt="Dimension Reduction" class="img-fluid">
+                    </div>
+                    {% endif %}
+                    
+                    {% if visualizations.feature_importance %}
+                    <div class="col-md-12 mb-4">
+                        <h4>Feature Importance</h4>
+                        <img src="{{ visualizations.feature_importance }}" alt="Feature Importance" class="img-fluid">
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>Interpretation of Results</h3>
+            </div>
+            <div class="card-body">
+                <h4>Price Range Categories with PKR Estimates:</h4>
+                <ul class="list-group mb-4">
+                    <li class="list-group-item"><strong>Low Cost (0)</strong>: Budget-friendly phones with basic features - <span class="text-success">PKR 10,000 - PKR 25,000</span></li>
+                    <li class="list-group-item"><strong>Medium Cost (1)</strong>: Mid-range phones with decent specifications - <span class="text-success">PKR 25,000 - PKR 45,000</span></li>
+                    <li class="list-group-item"><strong>High Cost (2)</strong>: Premium phones with advanced features - <span class="text-success">PKR 45,000 - PKR 80,000</span></li>
+                    <li class="list-group-item"><strong>Very High Cost (3)</strong>: Flagship phones with cutting-edge technology - <span class="text-success">PKR 80,000 - PKR 200,000+</span></li>
+                </ul>
+                <p class="text-muted">Note: Price ranges in PKR are approximate estimates and may vary based on market conditions and specific models.</p>
+                
+                <h4>Understanding Model Differences:</h4>
+                <p>Different models may give different predictions because they use different approaches to classify the data:</p>
+                <ul>
+                    <li><strong>KNN</strong>: Makes predictions based on similarity to known examples</li>
+                    <li><strong>K-Means</strong>: Groups similar phones together based on their features</li>
+                    <li><strong>Naive Bayes</strong>: Uses probability theory to predict the most likely price range</li>
+                    <li><strong>Decision Tree</strong>: Makes decisions based on feature thresholds in a tree-like structure</li>
+                </ul>
+                
+                <p class="mt-3">The recommended model is selected based on the highest overall performance (F1 score) during model evaluation.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

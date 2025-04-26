@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Batch Prediction - Mobile Price Range Prediction{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h1 class="text-center">Batch Prediction</h1>
+        <p class="lead text-center">Upload a CSV file with multiple mobile specifications for batch prediction</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>Upload CSV File</h3>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('model_bp.upload_file') }}" method="post" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label for="file" class="form-label">Select CSV File</label>
+                        <input class="form-control" type="file" id="file" name="file" accept=".csv">
+                        <div class="form-text">Upload a CSV file with the same features as the training data.</div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Upload and Predict</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>CSV File Format</h3>
+            </div>
+            <div class="card-body">
+                <p>The CSV file should contain the following columns (without the <code>price_range</code> column):</p>
+                
+                <ul class="list-group mb-4">
+                    <li class="list-group-item"><strong>battery_power</strong>: Total energy a battery can store in one time (mAh)</li>
+                    <li class="list-group-item"><strong>blue</strong>: Has Bluetooth or not (0/1)</li>
+                    <li class="list-group-item"><strong>clock_speed</strong>: Speed at which microprocessor executes instructions</li>
+                    <li class="list-group-item"><strong>dual_sim</strong>: Has dual SIM support or not (0/1)</li>
+                    <li class="list-group-item"><strong>fc</strong>: Front Camera megapixels</li>
+                    <li class="list-group-item"><strong>four_g</strong>: Has 4G or not (0/1)</li>
+                    <li class="list-group-item"><strong>int_memory</strong>: Internal Memory in gigabytes</li>
+                    <li class="list-group-item"><strong>m_dep</strong>: Mobile Depth in cm</li>
+                    <li class="list-group-item"><strong>mobile_wt</strong>: Weight of mobile phone</li>
+                    <li class="list-group-item"><strong>n_cores</strong>: Number of processor cores</li>
+                    <li class="list-group-item"><strong>pc</strong>: Primary Camera megapixels</li>
+                    <li class="list-group-item"><strong>px_height</strong>: Pixel Resolution Height</li>
+                    <li class="list-group-item"><strong>px_width</strong>: Pixel Resolution Width</li>
+                    <li class="list-group-item"><strong>ram</strong>: Random Access Memory in Megabytes</li>
+                    <li class="list-group-item"><strong>sc_h</strong>: Screen Height of mobile in cm</li>
+                    <li class="list-group-item"><strong>sc_w</strong>: Screen Width of mobile in cm</li>
+                    <li class="list-group-item"><strong>talk_time</strong>: Longest time that a single battery charge will last when you are on call</li>
+                    <li class="list-group-item"><strong>three_g</strong>: Has 3G or not (0/1)</li>
+                    <li class="list-group-item"><strong>touch_screen</strong>: Has touch screen or not (0/1)</li>
+                    <li class="list-group-item"><strong>wifi</strong>: Has wifi or not (0/1)</li>
+                </ul>
+                
+                <div class="text-center">
+                    <a href="#" class="btn btn-outline-secondary" onclick="downloadSampleCsv()" download="sample_test_data.csv">Download Sample CSV Template</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function downloadSampleCsv() {
+        const header = "battery_power,blue,clock_speed,dual_sim,fc,four_g,int_memory,m_dep,mobile_wt,n_cores,pc,px_height,px_width,ram,sc_h,sc_w,talk_time,three_g,touch_screen,wifi";
+        const row1 = "1000,1,1.5,1,5,1,32,0.6,150,4,12,1280,720,2048,12,7,15,1,1,1";
+        const row2 = "2000,1,2.5,1,8,1,64,0.5,130,6,16,1920,1080,3072,15,8,20,1,1,1";
+        const row3 = "800,0,1.0,0,2,0,16,0.7,180,2,8,800,600,1024,10,6,8,1,0,1";
+        
+        const csv = header + "\n" + row1 + "\n" + row2 + "\n" + row3;
+        const blob = new Blob([csv], {type: "text/csv;charset=utf-8"});
+        const url = URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = "sample_test_data.csv";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+{% endblock %}
