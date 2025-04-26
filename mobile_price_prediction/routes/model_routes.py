@@ -161,10 +161,28 @@ def estimate_price_from_features(features, price_range):
     Returns:
         dict: Dictionary containing min_price, max_price, and exact_price
     """
-    # Convert price range to int if it's a string (e.g. from "Low Cost (0)")
+    # Convert price range to int if it's a string or extract first element if it's a list/array
+    if isinstance(price_range, (list, np.ndarray)):
+        price_range = price_range[0]  # Take the first element if it's a list or array
+    
     if isinstance(price_range, str):
         # Extract number from string like "Low Cost (0)"
-        price_range = int(price_range.split("(")[1].split(")")[0])
+        try:
+            price_range = int(price_range.split("(")[1].split(")")[0])
+        except (IndexError, ValueError):
+            # Default to price_range 1 if parsing fails
+            price_range = 1
+    elif isinstance(price_range, dict):
+        # If somehow a dictionary was passed, use a default value
+        price_range = 1
+    
+    # Ensure price_range is an integer between 0 and 3
+    try:
+        price_range = int(price_range)
+        price_range = max(0, min(3, price_range))  # Clamp between 0 and 3
+    except (TypeError, ValueError):
+        # Default to price_range 1 if conversion fails
+        price_range = 1
     
     # Base price ranges (in PKR)
     base_ranges = {
